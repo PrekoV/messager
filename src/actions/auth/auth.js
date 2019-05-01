@@ -5,7 +5,7 @@ import {
     REGISTER_SUCCESS,
     REGISTER_FAILED,
     RESET_PASSWORD,
-    CONFIRM_PASSWORD
+    FORGOT_PASSWORD
 } from "../../constants";
 import API from "../../services/api";
 
@@ -13,8 +13,7 @@ const authSuccessAction = payload => {
     return {
         type: LOGIN_SUCCESS,
         isAuth: true,
-        payload,
-        err: ""
+        payload
     };
 };
 
@@ -30,8 +29,7 @@ const registerSuccessAction = payload => {
     return {
         type: REGISTER_SUCCESS,
         isAuth: false,
-        payload,
-        err: ""
+        payload
     };
 };
 
@@ -46,23 +44,22 @@ const registerFailedAction = err => {
 const logoutAction = () => {
     return {
         type: LOGOUT,
-        isAuth: false,
-        err: ""
+        isAuth: false
     };
 };
 
 const resetPasswordAction = () => {
     return {
         type: RESET_PASSWORD,
-        isAuth: false,
-        err: ""
+        isAuth: false
     };
 };
 
-const confirmPasswordAction = err => {
+const forgotPasswordAction = (email, err) => {
     return {
-        type: CONFIRM_PASSWORD,
+        type: FORGOT_PASSWORD,
         isAuth: false,
+        email,
         err
     };
 };
@@ -100,9 +97,17 @@ export const logout = () => {
     };
 };
 
-export const resetPassword = (name, newPassword) => {
+export const resetPassword = (token, newPassword) => {
     return dispatch => {
-        return API.post("resetPassword", { name, newPassword })
+        return API.post(
+            "resetPasswordConfirm",
+            { newPassword },
+            {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            }
+        )
             .then(res => {
                 dispatch(resetPasswordAction());
             })
@@ -113,9 +118,22 @@ export const resetPassword = (name, newPassword) => {
     };
 };
 
-export const confirmPassword = (name, password, email, code) => {
+export const forgotPassword = email => {
     return dispatch => {
-        return API.post("confirm", { code, name, password, email })
+        return API.post("resetPassword", { email })
+            .then(res => {
+                dispatch(forgotPasswordAction(email, ""));
+            })
+            .catch(e => {
+                dispatch(forgotPasswordAction(null, ""));
+                throw new Error(e);
+            });
+    };
+};
+
+export const confirmPassword = (code) => {
+    return dispatch => {
+        return API.post("confirm", { code })
             .then(res => {
                 console.log(res);
                 return dispatch(registerSuccessAction({}));
@@ -129,15 +147,13 @@ export const confirmPassword = (name, password, email, code) => {
 
 export const authorizated = () => {
     return dispatch => {
-        API.post("user").then(
-            res => {
+        return API.post("user")
+            .then(res => {
                 console.log(res);
-                return dispatch(authSuccessAction(res.data.authData.user[0]));
-            },
-            rej => {
-                localStorage.clear();
-                //  return dispatch(authFailedAction(rej.message));
-            }
-        );
+                dispatch(authSuccessAction(res.data.authData.user[0]));
+            })
+            .catch(e => {
+                console.log(e)
+            });
     };
 };

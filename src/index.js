@@ -4,11 +4,12 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import { store } from "./store";
-import RouterComponent from "./Router";
+
+import RouterComponent from './Router'
 
 ReactDOM.render(
     <Provider store={store}>
-       <RouterComponent/>
+       <RouterComponent />
     </Provider>,
     document.getElementById("root")
 );

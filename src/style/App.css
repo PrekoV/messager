@@ -1,144 +1,25 @@
-.Header {
-  margin: 0;
-  padding: 0;
-  background-color: #ffc0cb;
-  height: 60px;
-}
-.Header .wrapper-header {
-  width: 90%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding-top: 20px;
-}
-.Header .wrapper-header ul {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-.Header .wrapper-header ul li {
-  list-style: none;
-  font-family: "Roboto";
-  font-size: 16px;
-  padding: 0 20px;
-  cursor: pointer;
-}
-.Header .wrapper-header ul li a {
-  text-decoration: none;
-  color: #000;
-  transition: 0.4s;
-}
-.Header .wrapper-header ul li a:hover {
-  color: #fff;
-  transition: 0.4s;
-}
-.SignIn {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
-  overflow: auto;
-}
-.SignIn .wrapper {
-  border: 2px solid #ffc0cb;
-  width: 40%;
-  min-width: 200px;
-  margin: 0 auto;
-  padding: 10px;
-  text-align: center;
-}
-.SignIn .wrapper .title {
-  font-size: 24px;
-  text-align: center;
-}
-.SignIn .wrapper .err {
+.err {
   color: #f00;
   font-size: 14px;
   text-align: center;
 }
-.SignIn .wrapper form {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-}
-.SignIn .wrapper form .line {
-  height: 20px;
-}
-.SignIn .wrapper form .forgot {
+.forgot {
   padding: 20px;
   display: inline;
 }
-.SignIn .wrapper form .forgot a {
+a {
   color: #000;
   text-decoration: none;
   cursor: pointer;
   font-size: 14px;
 }
-.SignIn .wrapper form .forgot a:hover {
-  color: #ffc0cb;
+a:hover {
+  color: #f50057 !important;
 }
-.SignIn .wrapper form .inputs {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 80%;
-}
-.SignUp {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
-  overflow: auto;
-}
-.SignUp .wrapper {
-  border: 2px solid #ffc0cb;
-  width: 30%;
-  min-width: 200px;
-  margin: 0 auto;
-  padding: 10px;
-  text-align: center;
-}
-.SignUp .wrapper .title {
-  font-size: 24px;
-  text-align: center;
-}
-.SignUp .wrapper .err {
+.err {
   color: #f00;
   font-size: 14px;
   text-align: center;
-}
-.SignUp .wrapper form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.SignUp .wrapper form .line {
-  height: 20px;
-}
-.SignUp .wrapper form div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  flex-wrap: wrap;
-  width: 100%;
-}
-.SignUp .wrapper form div div {
-  min-width: 100px;
-  max-width: 300px;
 }
 .resetPassword {
   width: 100%;

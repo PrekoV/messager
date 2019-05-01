@@ -1,10 +1,10 @@
 import React from "react";
 import "./style/App.css";
-// import RouterComponent from "./Router";
 import { authorizated } from "./actions/auth/auth";
 import { connect } from "react-redux";
 
 import Header from "./components/header/header";
+import RouterComponent from "./Router";
 
 const mapStateToProps = state => {
     return {
@@ -22,6 +22,7 @@ class App extends React.Component {
     componentDidMount = () => {
         console.log(this.props.auth);
         this.props.authorizated();
+        if(localStorage.getItem("notAuthorizated")) this.props.history.push("/confirm")
     };
     render() {
         console.log(this.props.auth);
