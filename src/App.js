@@ -4,7 +4,8 @@ import { authorizated } from "./actions/auth/auth";
 import { connect } from "react-redux";
 
 import Header from "./components/header/header";
-import RouterComponent from "./Router";
+// import RouterComponent from "./Router";
+import SocketConnection from "./containers/socket.js/socket";
 
 const mapStateToProps = state => {
     return {
@@ -28,9 +29,11 @@ class App extends React.Component {
         console.log(this.props.auth);
         return (
             <div>
-                {/* <RouterComponent/> */}
                 <Header isAuth={this.props.auth.isAuth} />
-                {this.props.auth.isAuth && <div> you are in system now</div>}
+                {
+                    this.props.auth.isAuth && <SocketConnection auth= {this.props.auth}/>
+                }
+                
             </div>
         );
     }

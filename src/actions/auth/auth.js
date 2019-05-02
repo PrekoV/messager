@@ -150,9 +150,10 @@ export const authorizated = () => {
         return API.post("user")
             .then(res => {
                 console.log(res);
-                dispatch(authSuccessAction(res.data.authData.user[0]));
+                dispatch(authSuccessAction(res.data.authData.user));
             })
             .catch(e => {
+                localStorage.clear()
                 console.log(e)
             });
     };
