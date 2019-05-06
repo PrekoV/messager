@@ -26,7 +26,7 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const url = "http://62b09834.ngrok.io";
+const url = "http://ec2-3-83-109-153.compute-1.amazonaws.com";
 let socket = null;
 const styles = theme => ({
     textField: {

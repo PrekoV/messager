@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const API = axios.create({
-    baseURL: 'http://62b09834.ngrok.io/api',
+    baseURL: 'http://ec2-3-83-109-153.compute-1.amazonaws.com/api',
     // onUploadProgress: function (progressEvent) {
     //     if (progressEvent.lengthComputable) {
     //         console.log(progressEvent.loaded + ' ' + progressEvent.total);
