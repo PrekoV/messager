@@ -56,13 +56,19 @@ const styles = theme => ({
         flexDirection: 'column',
         alignItems: 'flex-start'
     },
-    
+    online:{
+        color:'rgba(0, 100, 0, 0.7)'
+    }
 });
 
 class Message extends Component {
+
+    componentDidMount = () =>{
+        
+    }
     render() {
         const { classes } = this.props;
-        const { name, text, isMe } = this.props;
+        const { name, text, isMe, date } = this.props;
         return (
             <div className={isMe ? classes.messagesender : classes.messagereceiver}>
                 <div className={classes.messageWrapper}>
@@ -73,10 +79,17 @@ class Message extends Component {
                         }}
                     >
                         <div className={isMe ? classes.sender : classes.receiver}>
+                            <div className={classes.name}>{date && date.substring(0,10) +" in "+ date.substring(11,19)} </div>
                             <div className={isMe ? classes.textWrapperSender : classes.textWrapperReceiver}>
                                 <div className={classes.text}>{text}</div>
                             </div>
-                            <div className={classes.name}>{name}</div>
+                            <div className={classes.name}>{name} {
+                                this.props.onlineUsers.map(user =>{
+                                    return(
+                                        <span className={classes.online} key={user.user}>{user.user===name ? 'online': ''}</span>
+                                    )
+                                })
+                            } </div>
                         </div>
                     </Zoom>
                 </div>

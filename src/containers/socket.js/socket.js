@@ -26,7 +26,7 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const url = "https://277a493d.ngrok.io";
+const url = "http://62b09834.ngrok.io";
 let socket = null;
 const styles = theme => ({
     textField: {
@@ -53,14 +53,24 @@ const styles = theme => ({
         height: "80vh",
         width: "70%",
         margin: "0 auto"
+    },
+    name: {
+        color: 'rgba(0, 0, 0, 0.54)',
+        fontSize: '0.75rem',
+        padding: 10
     }
 });
+
+var timeout = undefined
 
 class SocketConnection extends Component {
     state = {
         text: "",
         count: 1,
-        msgs: []
+        msgs: [],
+        typing: false,
+        typingUser: "",
+        onlineUsers: []
     };
 
     componentWillMount() {
@@ -70,7 +80,7 @@ class SocketConnection extends Component {
 
     componentWillUnmount = () => {
         socket.emit("disconnectUser", { user: this.props.auth.userdata.name });
-        //  window.removeEventListener('scroll', this.isScroll);
+        socket.disconnect()
     };
 
     // componentDidUpdate(prevProps, prevState) {
@@ -81,14 +91,13 @@ class SocketConnection extends Component {
     //     }else {
     //         this.messagesEnd.scrollIntoView({ block: 'end'});
     //     }
-
     // }
 
     initSocet = socket => {
         socket.emit("userConnected", { user: this.props.auth.userdata.name });
         socket.on("show message user", data => {
-            console.log(data);
-            this.setState({ msgs: data.result }, () => {
+            this.setState({ msgs: data.result, onlineUsers: data.onlineUser }, () => {
+                console.log(data)
                 this.messagesEnd.scrollIntoView({
                     behavior: "smooth"
                 });
@@ -96,30 +105,40 @@ class SocketConnection extends Component {
             //this.props.connectToSocket(data.result);
         });
         socket.on("add message on page", data => {
-            console.log(data);
             const newMassage = data.messageData;
             let a = this.state.msgs;
             a.push(newMassage);
-            this.setState({ msgs: a }, () => {
+            this.setState({ msgs: a, typing: false, typingUser: ""}, () => {
+                // if(this.chat.scroll)
+                //  console.log(this.chat.scrollHeight-this.chat.scrollTop)
+                //if(this.chat.scrollTop >=0 && this.chat.scrollTop <= 200){
                 this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+                // }
             });
             // this.props.getNewMessage(newMassage);
         });
-
-        //  socket.disconnect();
+        socket.on("typing", data => {
+            if(!this.state.typing){
+                this.setState({ typing: true, typingUser: data.user }, () => {
+                this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+            });
+            }
+            clearTimeout(timeout)
+            timeout = setTimeout(() =>  this.setState({ typing: false}), 1000)
+        });
+        socket.on('disconnectUser', data =>{
+            console.log(data)
+        })
     };
 
     setInput = e => {
+        socket.emit("typing", { user: this.props.auth.userdata.name });
         this.setState({ text: e.target.value });
     };
 
     submit = e => {
         e.preventDefault();
-        if (
-            this.state.text &&
-            this.state.text.length > 0 &&
-            this.state.text.trim()
-        ) {
+        if (this.state.text && this.state.text.length > 0 && this.state.text.trim()) {
             socket.emit("send message", {
                 msg: this.state.text.trim(),
                 senderName: this.props.auth.userdata.name
@@ -131,35 +150,35 @@ class SocketConnection extends Component {
     loadMore = () => {
         let a = this.state.count;
         a++;
-        // console.log(a)
-        // this.setState({count: a})
-        console.log("aa")
-        // pagination?page=3&countMessage=1
-        API.get("pagination?page="+a+"&countMessage="+(this.state.msgs.length)).then(res => {
-            console.log(a);
-            console.log(res);
-            let m = [...res.data.result,...this.state.msgs];
-            // m.concat(res.data.result);
-            console.log(m);
-            this.setState({ count: a, msgs: m }, () => {
-                this.messagesEnd.scrollTop =this.messagesEnd.scrollHeight
+        API.get("pagination/" + this.state.msgs.length)
+            .then(res => {
+                let m = [...res.data.result, ...this.state.msgs];
+                this.setState({ count: a, msgs: m }, () => {
+                    if (this.chat.clientHeight !== 759) {
+                        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+                    }
+                });
+                //  this.props.getNext10(a)
+            })
+            .catch(e => {
+                console.log(e);
             });
-            //  this.props.getNext10(a)
-        }).catch(e => {
-            console.log("ffff")
-        });
-        //   this.setState({count: a})
-        // this.props.getNext10(a)
     };
 
     render() {
         const { classes } = this.props;
-        console.log(this.state, this.props);
+        console.log(this.state);
         return (
             <div className="SocketConnection">
                 <div className="chatWrapper">
                     <div className="chat">
-                        <div className={classes.chatWrapper}>
+                        <div
+                            ref={r => {
+                                this.chat = r;
+                            }}
+                            className={classes.chatWrapper}
+                            id="a"
+                        >
                             <Button
                                 color="secondary"
                                 className={classes.button}
@@ -177,6 +196,8 @@ class SocketConnection extends Component {
                                         }
                                         name={msg.senderName}
                                         text={msg.body}
+                                        onlineUsers= {this.state.onlineUsers}
+                                        date={msg.createdAt}
                                     />
                                 );
                             })}
@@ -186,6 +207,9 @@ class SocketConnection extends Component {
                                     this.messagesEnd = el;
                                 }}
                             />
+                            {
+                                this.state.typing && <div className={classes.name}> {this.state.typingUser} is typing...</div>
+                            }
                         </div>
 
                         <div className={classes.formwrapper}>
@@ -194,12 +218,13 @@ class SocketConnection extends Component {
                                 onSubmit={e => this.submit(e)}
                             >
                                 <TextField
-                                    id="outlined-textarea"
+                                    id="outlined-with-placeholder"
                                     label="Type message"
                                     placeholder="Enter text"
                                     multiline
                                     value={this.state.text}
                                     onChange={e => this.setInput(e)}
+                                    rowsMax="4"
                                     helperText={this.props.auth.userdata.name}
                                     className={classes.textField}
                                     margin="normal"
