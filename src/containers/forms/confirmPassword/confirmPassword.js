@@ -113,6 +113,7 @@ class ConfirmPassword extends Component {
                             type="submit"
                             fullWidth
                             variant="contained"
+                            disabled = {!(this.state.code)}
                             color="primary"
                             className={classes.submit}
                             onClick={e => this.submit(e)}

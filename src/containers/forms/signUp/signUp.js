@@ -110,6 +110,17 @@ class SignUp extends Component {
                     });
                 }
                 break;
+            case "name":
+                if (e.target.value.length < 5) {
+                    this.setState({
+                        err: "Name is too short"
+                    });
+                } else {
+                    this.setState({
+                        err: ""
+                    });
+                }
+                break;
             default:
                 this.setState({
                     err: ""
@@ -205,6 +216,7 @@ class SignUp extends Component {
                             fullWidth
                             variant="contained"
                             color="primary"
+                            disabled = {!(this.state.name && this.state.email && this.state.password && this.state.repeatPassword && !this.state.err)}
                             className={classes.submit}
                             onClick={(e)=>this.submit(e)}
                         >

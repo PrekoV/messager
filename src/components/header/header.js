@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
+// import IconButton from "@material-ui/core/IconButton";
 
 import Typography from "@material-ui/core/Typography";
 
@@ -49,7 +49,7 @@ const mapDispatchToProps = dispatch => {
 
 class Header extends Component {
     render() {
-        console.log(this.props);
+       // console.log(this.props);
         const { classes } = this.props;
         return (
             <header className="Header">

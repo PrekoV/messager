@@ -1,4 +1,3 @@
-
 import React from "react";
 
 import { emailPattern } from "../../../constants";
@@ -8,7 +7,6 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-//import PropTypes from "prop-types";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -18,10 +16,6 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
-
-// import React, { Component } from "react";
-// import TextField from "@material-ui/core/TextField";
-// import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
     main: {
@@ -40,7 +34,8 @@ const styles = theme => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`
+        padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit *
+            3}px ${theme.spacing.unit * 3}px`
     },
     avatar: {
         margin: theme.spacing.unit,
@@ -91,30 +86,16 @@ class SignIn extends React.Component {
 
         switch (e.target.name) {
             case "email":
-                if (emailPattern.test(e.target.value)) {
-                    this.setState({
-                        err: ""
-                    });
-                } else
-                    this.setState({
-                        err: "Enter your e-mail"
-                    });
+                emailPattern.test(e.target.value)
+                    ? this.setState({ err: "" })
+                    : this.setState({ err: "Enter your e-mail" });
                 break;
             case "password":
-                if (e.target.value.length < 5) {
-                    this.setState({
-                        err: "Password too short!"
-                    });
-                } else {
-                    this.setState({
-                        err: ""
-                    });
-                }
+                e.target.value.length < 5
+                    ? this.setState({ err: "Password too short!" })
+                    : this.setState({ err: "" });
                 break;
-            default:
-                this.setState({
-                    err: ""
-                });
+            default: this.setState({ err: "" });
         }
     };
 
@@ -128,7 +109,6 @@ class SignIn extends React.Component {
                 .then(res => {
                     // this.setState({ err: "" });
                     this.props.history.push("/");
-                    
                 })
                 .catch(e => {
                     console.log(e);
@@ -200,6 +180,7 @@ class SignIn extends React.Component {
                         <Button
                             type="submit"
                             fullWidth
+                            disabled = {!(this.state.name && this.state.email && this.state.password && !this.state.err)}
                             variant="contained"
                             color="primary"
                             className={classes.submit}
@@ -224,14 +205,6 @@ export default withRouter(
         mapDispatchToProps
     )(withStyles(styles)(SignIn))
 );
-
-
-
-
-
-
-
-
 
 // // import CustomButton from "../../../components/customComponents/CustomButton";
 // //import pink from '@material-ui/core/colors/pink';

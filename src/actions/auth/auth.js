@@ -149,7 +149,7 @@ export const authorizated = () => {
     return dispatch => {
         return API.post("user")
             .then(res => {
-                console.log(res);
+                //console.log(res);
                 dispatch(authSuccessAction(res.data.authData.user));
             })
             .catch(e => {

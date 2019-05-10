@@ -8,7 +8,7 @@ const styles = theme => ({
         overflow: 'hidden',
         border: '1px solid rgba(245, 0, 87, 0.5)',
         padding: 10,
-        maxWidth: '80%',
+        maxWidth: '100%',
         marginRight: 20,
         wordWrap: 'break-word'
     },
@@ -44,7 +44,8 @@ const styles = theme => ({
     },
     text: {
         fontSize: 14,
-        wordWrap: 'break-word'
+        wordWrap: 'break-word',
+        color: '#2D2B2B'
     },
     messagesender:{
         display: 'flex',

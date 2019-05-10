@@ -21,19 +21,23 @@ const mapDispatchToProps = dispatch => {
 
 class App extends React.Component {
     componentDidMount = () => {
-        console.log(this.props.auth);
+      //  console.log(this.props.auth);
         this.props.authorizated();
-        if(localStorage.getItem("notAuthorizated")) this.props.history.push("/confirm")
+        if (localStorage.getItem("notAuthorizated"))
+            this.props.history.push("/confirm");
     };
     render() {
-        console.log(this.props.auth);
+      //  console.log(this.props.auth);
         return (
             <div>
                 <Header isAuth={this.props.auth.isAuth} />
-                {
-                    this.props.auth.isAuth && <SocketConnection auth= {this.props.auth}/>
-                }
-                
+                {this.props.auth.isAuth ? (
+                    <SocketConnection auth={this.props.auth} />
+                ) : (
+                    <div className='not-auth'> 
+                        You have to sign in (sign up) to message
+                    </div>
+                )}
             </div>
         );
     }

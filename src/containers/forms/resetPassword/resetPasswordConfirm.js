@@ -183,6 +183,7 @@ class ResetPasswordConfirm extends Component {
                             fullWidth
                             variant="contained"
                             color="primary"
+                            disabled = {!(this.state.repeatPassword && this.state.password && !this.state.err)}
                             className={classes.submit}
                             onClick={(e) => this.submit(e)}
                         >

@@ -136,6 +136,7 @@ class ResetConfirm extends Component {
                         <Button
                             type="submit"
                             fullWidth
+                            disabled = {!(this.state.email)}
                             variant="contained"
                             color="primary"
                             className={classes.submit}
